@@ -61,6 +61,20 @@ def add_post():
     categories = Category.query.all()
     return render_template('create_post.html', categories=categories)
 
+#Actualizar post
+@app.route('/post/update/<int:id>', methods=['GET','POST'])
+def update_post(id):
+    post = Post.query.get(id)
+    if request.method == 'POST':
+        post.title = request.form['title']
+        post.category_id = request.form['category_id']
+        post.content = request.form['content']
+        db.session.commit()
+        return redirect(url_for('index'))
+    
+    categories = Category.query.all()
+    return render_template('update_post.html', post=post, categories=categories)
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
