@@ -75,6 +75,15 @@ def update_post(id):
     categories = Category.query.all()
     return render_template('update_post.html', post=post, categories=categories)
 
+#Eliminar post
+@app.route('/posts/delete/<int:id>')
+def delete_post(id):
+    post = Post.query.get(id)
+    if post:
+        db.session.delete(post)
+        db.session.commit()
+    return redirect(url_for('index'))
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
